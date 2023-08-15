@@ -1,0 +1,49 @@
+<div class="container">
+
+  <div class="score-card">
+    <div class="score-board">
+      <h1>Best score</h1>
+      <h3>{{m.bestScore}}</h3>
+    </div>
+
+    <div class="score-board">
+      <h1>Score</h1>
+      <h3>{{m.score}}</h3>
+    </div>
+
+    <div class="score-board">
+      <h1>Time</h1>
+      <h3>{{m.time}}</h3>
+    </div>
+
+    <div class="score-board">
+      <h1>Level</h1>
+      <h3>{{m.level}}</h3>
+    </div>
+
+    <div (click)="restart()" class="restart-button">
+      RESTART
+    </div>
+  </div>
+
+  <div class="game-board">
+
+
+  </div>
+
+  <div *ngIf="m.gameOver" class="game-over">
+    <h1>Game Over</h1>
+  </div>
+
+  <div class="mobile-controls">
+    <nav class="o-pad">
+      <a (click)="dpadMovement('ArrowUp')" class="up"></a>
+      <a (click)="dpadMovement('ArrowRight')" class="right"></a>
+      <a (click)="dpadMovement('ArrowDown')" class="down"></a>
+      <a (click)="dpadMovement('ArrowLeft')" class="left"></a>
+    </nav>
+  </div>
+
+
+</div>
+
