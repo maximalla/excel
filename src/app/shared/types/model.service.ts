@@ -17,5 +17,5 @@ export class ModelService {
   headTurn = 0;
   timerSubscription!: Subscription;
   time: number = 0;
-  isRunning: boolean = false;
+  isRunning = false;
 }
