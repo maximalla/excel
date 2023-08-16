@@ -1,20 +1,18 @@
+import { AppConstants } from '../shared/constants/constants';
 import { Position } from '../shared/interfaces/position';
-
-const gridSizeX = 21;
-const gridSizeY = 21;
 
 export function randomGridPosition(): Position {
   return {
-    x: Math.floor(Math.random() * gridSizeX) + 1,
-    y: Math.floor(Math.random() * gridSizeY) + 1,
+    x: Math.floor(Math.random() * (AppConstants.gridSizeX - 2)) + 1,
+    y: Math.floor(Math.random() * (AppConstants.gridSizeY - 2)) + 1,
   };
 }
 
 export function outsideGrid(position: any): boolean {
   return (
     position.x < 1 ||
-    position.x > gridSizeX ||
+    position.x > AppConstants.gridSizeX ||
     position.y < 1 ||
-    position.y > gridSizeY
+    position.y > AppConstants.gridSizeY
   );
 }

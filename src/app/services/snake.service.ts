@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { AppConstants } from '../shared/constants/constants';
 import { Position } from '../shared/interfaces/position';
 import { ModelService } from '../shared/types/model.service';
 import { InputService } from './input.service';
@@ -25,17 +26,24 @@ export class SnakeService {
     for (let i = this.snakeBody.length - 2; i >= 0; i--) {
       this.snakeBody[i + 1] = { ...this.snakeBody[i] };
     }
-    this.snakeBody[0].x += inputDirection.x;
-    this.snakeBody[0].y += inputDirection.y;
+
+    this.snakeBody[0].x =
+      (this.snakeBody[0].x + inputDirection.x + AppConstants.gridSizeX) %
+      AppConstants.gridSizeX;
+
+    this.snakeBody[0].y =
+      (this.snakeBody[0].y + inputDirection.y + AppConstants.gridSizeY) %
+      AppConstants.gridSizeY;
   }
 
   draw(gameBoard: any): void {
     this.snakeBody.forEach((segment, i) => {
       const snakeElement = document.createElement('div');
+      snakeElement.innerText = i.toString();
       snakeElement.style.gridRowStart = segment.y.toString();
       snakeElement.style.gridColumnStart = segment.x.toString();
       snakeElement.classList.add('snake');
-      if (i == 0) {
+      if (i === 0) {
         snakeElement.classList.add('head');
         snakeElement.style.transform = 'rotate(' + this.m.headTurn + 'deg)';
       }

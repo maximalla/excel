@@ -6,9 +6,8 @@ import { Subscription } from 'rxjs';
 })
 export class ModelService {
   lastRenderTime = 0;
-  gameOver = false;
   gameBoard: any;
-  snakeSpeed = 1;
+  baseSpeed = 3;
   foodPosition: any;
   expansionRate = 1;
   score = 0;
@@ -18,4 +17,14 @@ export class ModelService {
   timerSubscription!: Subscription;
   time: number = 0;
   isRunning = false;
+  private _gameOver = false;
+
+  get gameOver(): boolean {
+    return this._gameOver;
+  }
+
+  set gameOver(value: boolean) {
+    this._gameOver = value;
+    if (value) this.isRunning = false;
+  }
 }

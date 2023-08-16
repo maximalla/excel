@@ -18,7 +18,7 @@ export class FoodService {
 
   set addScore(val: number) {
     this.m.score += val;
-    if (this.m.score % 10 === 0) this.m.level++;
+    if (this.m.score % 1 === 0) this.m.level++;
     if (this.m.score > this.m.bestScore) {
       this.m.bestScore = this.m.score;
       localStorage.setItem(

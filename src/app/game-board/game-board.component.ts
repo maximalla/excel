@@ -21,11 +21,9 @@ export class GameBoardComponent implements OnInit, AfterViewInit, OnDestroy {
   ) {}
 
   get snakeSpeed(): number {
-    const score = this.m.score;
-    if (score < 10) return 4;
-    if (score > 10 && score < 15) return 5;
-    if (score > 15 && score < 20) return 6;
-    return 7;
+    return this.m.level < 10
+      ? this.m.baseSpeed + this.m.level
+      : this.m.baseSpeed + 10;
   }
 
   ngOnInit(): void {
@@ -56,7 +54,7 @@ export class GameBoardComponent implements OnInit, AfterViewInit, OnDestroy {
     if (secondsSinceLastRender < 1 / this.snakeSpeed) return;
     this.m.lastRenderTime = currentTime;
     this.update();
-    this.draw();
+    if (!this.m.gameOver) this.draw();
   }
 
   dpadMovement(direction: string): void {
@@ -77,7 +75,10 @@ export class GameBoardComponent implements OnInit, AfterViewInit, OnDestroy {
 
   checkDeath(): void {
     this.m.gameOver =
-      outsideGrid(this.snake.getSnakeHead()) || this.snake.snakeIntersection();
+      this.m.level < 5
+        ? outsideGrid(this.snake.getSnakeHead()) ||
+          this.snake.snakeIntersection()
+        : this.snake.snakeIntersection();
     if (!this.m.gameOver) return;
     this.m.gameBoard.classList.add('blur');
   }
