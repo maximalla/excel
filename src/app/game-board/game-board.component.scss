@@ -287,13 +287,6 @@
 
 // Ipads and Mobiles
 @media only screen and (max-width: 1025px) {
-  .container {
-    flex-direction: column;
-
-    .score-card {
-      flex-direction: row !important;
-    }
-  }
   .mobile-controls {
     margin-top: 10px;
     display: flex !important;
