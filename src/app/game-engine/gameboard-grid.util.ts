@@ -8,11 +8,11 @@ export function randomGridPosition(): Position {
   };
 }
 
-export function outsideGrid(position: any): boolean {
+export function outsideGrid(position1: Position, position2: Position): boolean {
   return (
-    position.x < 1 ||
-    position.x > AppConstants.gridSizeX ||
-    position.y < 1 ||
-    position.y > AppConstants.gridSizeY
+    (position1.x === 1 && position2.x === AppConstants.gridSizeX) ||
+    (position1.x === AppConstants.gridSizeX && position2.x === 1) ||
+    (position1.y === 1 && position2.y === AppConstants.gridSizeY) ||
+    (position1.y === AppConstants.gridSizeY && position2.y === 1)
   );
 }

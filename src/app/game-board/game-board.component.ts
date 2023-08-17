@@ -1,6 +1,5 @@
 import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { interval } from 'rxjs';
-import { outsideGrid } from '../game-engine/gameboard-grid.util';
 import { FoodService } from '../services/food.service';
 import { InputService } from '../services/input.service';
 import { SnakeService } from '../services/snake.service';
@@ -38,6 +37,17 @@ export class GameBoardComponent implements OnInit, AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {
     this.m.gameBoard = document.querySelector('.game-board');
     window.requestAnimationFrame(this.start.bind(this));
+
+    document.addEventListener('keydown', (event) => {
+      if (event.code === 'Space') {
+        this.togglePause();
+      }
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.code === 'KeyR') {
+        this.restart();
+      }
+    });
   }
 
   ngOnDestroy(): void {
@@ -45,6 +55,7 @@ export class GameBoardComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   start(currentTime: any): void {
+    if (this.m.isPaused) return;
     if (this.m.gameOver) {
       this.m.isRunning = false;
       return console.log('Game Over');
@@ -55,6 +66,13 @@ export class GameBoardComponent implements OnInit, AfterViewInit, OnDestroy {
     this.m.lastRenderTime = currentTime;
     this.update();
     if (!this.m.gameOver) this.draw();
+  }
+
+  togglePause(): void {
+    this.m.isPaused = !this.m.isPaused;
+    if (!this.m.isPaused) {
+      this.start(performance.now());
+    }
   }
 
   dpadMovement(direction: string): void {
@@ -74,11 +92,6 @@ export class GameBoardComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   checkDeath(): void {
-    this.m.gameOver =
-      this.m.level < 5
-        ? outsideGrid(this.snake.getSnakeHead()) ||
-          this.snake.snakeIntersection()
-        : this.snake.snakeIntersection();
     if (!this.m.gameOver) return;
     this.m.gameBoard.classList.add('blur');
   }

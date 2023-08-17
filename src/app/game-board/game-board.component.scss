@@ -3,7 +3,16 @@
   height: 100%;
   width: 100%;
   display: flex;
+  flex-direction: column;
   justify-content: space-evenly;
+
+  .score-card {
+    padding: 20px;
+    color: var(--board-color);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
 
   .mobile-controls {
     display: none;
@@ -210,44 +219,30 @@
 
   }
 
-  .score-card {
-    padding: 20px;
-    color: var(--board-color);
+
+  .restart-button {
+    padding: 0 6px;
+    color: var(--background-color);
+    border-radius: 20px;
+    height: 40px;
+    font-weight: bold;
     display: flex;
-    justify-content: space-between;
-    flex-direction: column;
+    justify-content: center;
     align-items: center;
-
-    .score-board {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-    }
-
-    .restart-button {
-      padding: 10px 20px;
-      color: var(--background-color);
-      border-radius: 20px;
-      height: 40px;
-      font-weight: bold;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background-color: var(--board-color);
-      cursor: pointer;
-      z-index: 99;
-    }
+    background-color: var(--board-color);
+    cursor: pointer;
+    z-index: 99;
   }
+
 
   .game-board {
     background-color: var(--board-color);
-    width: 80vmin;
+    width: 160vmin;
     height: 80vmin;
     display: grid;
     align-self: center;
+    grid-template-columns: repeat(40, 1fr);
     grid-template-rows: repeat(20, 1fr);
-    grid-template-columns: repeat(20, 1fr);
     grid-auto-columns: 1fr;
     grid-auto-rows: 1fr;
 
@@ -274,6 +269,20 @@
   h1 {
     font-size: 3em;
   }
+}
+
+.pause-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
 }
 
 // Ipads and Mobiles

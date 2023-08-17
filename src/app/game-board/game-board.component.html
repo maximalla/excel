@@ -1,34 +1,22 @@
 <div class="container">
-
   <div class="score-card">
-    <div class="score-board">
-      <h1>Best score</h1>
-      <h3>{{m.bestScore}}</h3>
-    </div>
+    <h3>Best score: {{m.bestScore}}</h3>
 
-    <div class="score-board">
-      <h1>Score</h1>
-      <h3>{{m.score}}</h3>
-    </div>
+    <h3>Score: {{m.score}}</h3>
 
-    <div class="score-board">
-      <h1>Time</h1>
-      <h3>{{m.time}}</h3>
-    </div>
+    <h3>Time: {{m.time}}</h3>
 
-    <div class="score-board">
-      <h1>Level</h1>
-      <h3>{{m.level}}</h3>
-    </div>
+    <h3>Level: {{m.level}}</h3>
 
     <div (click)="restart()" class="restart-button">
       RESTART
     </div>
   </div>
+  <div class="game-board"></div>
 
-  <div class="game-board">
-
-
+  <div *ngIf="m.isPaused && !m.gameOver" class="pause-overlay">
+    <h1>PAUSED</h1>
+    <p>Press Space to resume</p>
   </div>
 
   <div *ngIf="m.gameOver" class="game-over">

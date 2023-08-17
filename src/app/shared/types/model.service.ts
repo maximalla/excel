@@ -17,7 +17,17 @@ export class ModelService {
   timerSubscription!: Subscription;
   time: number = 0;
   isRunning = false;
+  private _isPaused = false;
   private _gameOver = false;
+
+  get isPaused(): boolean {
+    return this._isPaused;
+  }
+
+  set isPaused(value: boolean) {
+    this._isPaused = value;
+    this.isRunning = !value;
+  }
 
   get gameOver(): boolean {
     return this._gameOver;

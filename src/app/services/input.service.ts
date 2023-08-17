@@ -14,6 +14,8 @@ export class InputService {
   getInputs(): void {
     window.addEventListener('keydown', (e) => {
       if (
+        !this.m.isPaused &&
+        !this.m.gameOver &&
         [
           'ArrowUp',
           'ArrowDown',

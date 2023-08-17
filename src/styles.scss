@@ -35,6 +35,9 @@ body {
 
 
 .snake {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-color: var(--snake-color);
   border: 0.25vmin solid black;
   transition: all .3ms ease-in;

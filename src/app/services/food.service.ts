@@ -28,10 +28,6 @@ export class FoodService {
     }
   }
 
-  get currentScore() {
-    return this.m.score;
-  }
-
   update(): void {
     if (this.snake.onSnake(this.m.foodPosition)) {
       this.snake.expandSnake();

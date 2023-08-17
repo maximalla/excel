@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { outsideGrid } from '../game-engine/gameboard-grid.util';
 import { AppConstants } from '../shared/constants/constants';
 import { Position } from '../shared/interfaces/position';
 import { ModelService } from '../shared/types/model.service';
@@ -8,7 +9,7 @@ import { InputService } from './input.service';
   providedIn: 'root',
 })
 export class SnakeService {
-  snakeBody: Position[] = [{ x: 11, y: 11 }];
+  snakeBody: Position[] = [{ x: 20, y: 11 }];
   newSegments = 0;
 
   constructor(
@@ -27,23 +28,36 @@ export class SnakeService {
       this.snakeBody[i + 1] = { ...this.snakeBody[i] };
     }
 
-    this.snakeBody[0].x =
-      (this.snakeBody[0].x + inputDirection.x + AppConstants.gridSizeX) %
-      AppConstants.gridSizeX;
+    const newHeadX =
+      ((this.snakeBody[0].x + inputDirection.x + AppConstants.gridSizeX - 1) %
+        AppConstants.gridSizeX) +
+      1;
+    const newHeadY =
+      ((this.snakeBody[0].y + inputDirection.y + AppConstants.gridSizeY - 1) %
+        AppConstants.gridSizeY) +
+      1;
 
-    this.snakeBody[0].y =
-      (this.snakeBody[0].y + inputDirection.y + AppConstants.gridSizeY) %
-      AppConstants.gridSizeY;
+    if (
+      this.m.level < 5 &&
+      outsideGrid(this.snakeBody[0], { x: newHeadX, y: newHeadY })
+    )
+      this.m.gameOver = true;
+
+    this.snakeBody[0] = { x: newHeadX, y: newHeadY };
+
+    if (this.snakeIntersection()) this.m.gameOver = true;
   }
 
   draw(gameBoard: any): void {
     this.snakeBody.forEach((segment, i) => {
       const snakeElement = document.createElement('div');
-      snakeElement.innerText = i.toString();
       snakeElement.style.gridRowStart = segment.y.toString();
       snakeElement.style.gridColumnStart = segment.x.toString();
       snakeElement.classList.add('snake');
+
+      snakeElement.innerText += i.toString();
       if (i === 0) {
+        snakeElement.innerText += '.' + i.toString();
         snakeElement.classList.add('head');
         snakeElement.style.transform = 'rotate(' + this.m.headTurn + 'deg)';
       }
