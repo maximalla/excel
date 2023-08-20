@@ -9,7 +9,6 @@ export class ModelService {
   lastRenderTime = 0;
   gameBoard: any;
   baseSpeed = 3;
-  foodPosition: any;
   expansionRate = 1;
   score = 0;
   bestScore = 0;
@@ -17,7 +16,11 @@ export class ModelService {
   timerSubscription!: Subscription;
   time: number = 0;
   isRunning = false;
+
+  foodPosition: Position = { x: -5, y: -5 };
+  snakeBody: Position[] = [{ x: 20, y: 11 }];
   obstacles: Position[] = [];
+
   private _level = 1;
   private _isPaused = false;
   private _gameOver = false;

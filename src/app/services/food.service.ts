@@ -38,8 +38,8 @@ export class FoodService {
 
   draw(gameBoard: any): void {
     const foodElement = document.createElement('div');
-    foodElement.style.gridRowStart = this.m.foodPosition.y;
-    foodElement.style.gridColumnStart = this.m.foodPosition.x;
+    foodElement.style.gridRowStart = this.m.foodPosition.y.toString();
+    foodElement.style.gridColumnStart = this.m.foodPosition.x.toString();
     foodElement.classList.add('food');
     gameBoard.appendChild(foodElement);
   }
