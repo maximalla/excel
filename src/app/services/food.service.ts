@@ -18,7 +18,7 @@ export class FoodService {
 
   set addScore(val: number) {
     this.m.score += val;
-    if (this.m.score % 1 === 0) this.m.level++;
+    this.m.levelUpdate();
     if (this.m.score > this.m.bestScore) {
       this.m.bestScore = this.m.score;
       localStorage.setItem(
@@ -45,8 +45,11 @@ export class FoodService {
   }
 
   getRandomFoodPosition(): Position {
-    let newFoodPosition = null;
-    while (newFoodPosition == null || this.snake.onSnake(newFoodPosition)) {
+    let newFoodPosition = randomGridPosition();
+    while (
+      this.snake.onSnake(newFoodPosition) ||
+      this.m.obstacles.includes(newFoodPosition)
+    ) {
       newFoodPosition = randomGridPosition();
     }
     return newFoodPosition;

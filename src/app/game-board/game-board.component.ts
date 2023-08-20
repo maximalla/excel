@@ -2,6 +2,7 @@ import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { interval } from 'rxjs';
 import { FoodService } from '../services/food.service';
 import { InputService } from '../services/input.service';
+import { ObstaclesService } from '../services/obstacles.service';
 import { SnakeService } from '../services/snake.service';
 import { AppConstants } from '../shared/constants/constants';
 import { ModelService } from '../shared/types/model.service';
@@ -17,6 +18,7 @@ export class GameBoardComponent implements OnInit, AfterViewInit, OnDestroy {
     private readonly food: FoodService,
     private readonly snake: SnakeService,
     private readonly input: InputService,
+    private readonly obstacles: ObstaclesService,
   ) {}
 
   get snakeSpeed(): number {
@@ -89,6 +91,7 @@ export class GameBoardComponent implements OnInit, AfterViewInit, OnDestroy {
     this.m.gameBoard.innerHTML = '';
     this.snake.draw(this.m.gameBoard);
     this.food.draw(this.m.gameBoard);
+    this.obstacles.draw(this.m.gameBoard);
   }
 
   checkDeath(): void {

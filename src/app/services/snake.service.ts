@@ -4,6 +4,7 @@ import { AppConstants } from '../shared/constants/constants';
 import { Position } from '../shared/interfaces/position';
 import { ModelService } from '../shared/types/model.service';
 import { InputService } from './input.service';
+import { ObstaclesService } from './obstacles.service';
 
 @Injectable({
   providedIn: 'root',
@@ -15,6 +16,7 @@ export class SnakeService {
   constructor(
     private readonly m: ModelService,
     private readonly input: InputService,
+    private readonly obstacles: ObstaclesService,
   ) {}
 
   listenToInputs(): void {
@@ -38,14 +40,23 @@ export class SnakeService {
       1;
 
     if (
-      this.m.level < 5 &&
-      outsideGrid(this.snakeBody[0], { x: newHeadX, y: newHeadY })
+      (this.m.level < 5 &&
+        outsideGrid(this.snakeBody[0], { x: newHeadX, y: newHeadY })) ||
+      this.obstacles.checkObstacleCollision(this.snakeBody[0])
     )
       this.m.gameOver = true;
 
     this.snakeBody[0] = { x: newHeadX, y: newHeadY };
 
-    if (this.snakeIntersection()) this.m.gameOver = true;
+    const intersectionIndex = this.snakeIntersection();
+    if (intersectionIndex) {
+      if (this.m.level < 10) this.m.gameOver = true;
+      else {
+        this.snakeBody.splice(intersectionIndex);
+        this.m.score = this.snakeBody.length - 1;
+        this.m.levelUpdate();
+      }
+    }
   }
 
   draw(gameBoard: any): void {
@@ -69,22 +80,21 @@ export class SnakeService {
     this.newSegments += this.m.expansionRate;
   }
 
-  getSnakeHead(): Position {
-    return this.snakeBody[0];
+  snakeIntersection(): number {
+    for (let i = 1; i < this.snakeBody.length; i++) {
+      if (this.equalPositions(this.snakeBody[0], this.snakeBody[i])) return i;
+    }
+    return 0;
   }
 
-  snakeIntersection(): boolean {
-    return this.onSnake(this.snakeBody[0], { ignoreHead: true });
-  }
-
-  onSnake(position: any, { ignoreHead = false } = {}) {
+  onSnake(position: Position, { ignoreHead = false } = {}) {
     return this.snakeBody.some((segment, index) => {
       if (ignoreHead && index === 0) return false;
       return this.equalPositions(segment, position);
     });
   }
 
-  equalPositions(pos1: any, pos2: any): boolean {
+  equalPositions(pos1: Position, pos2: Position): boolean {
     return pos1.x === pos2.x && pos1.y === pos2.y;
   }
 
