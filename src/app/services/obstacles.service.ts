@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
-import { randomGridPosition } from '../game-engine/gameboard-grid.util';
 import { Position } from '../shared/interfaces/position';
 import { ModelService } from '../shared/types/model.service';
+import { PositionGeneratorService } from './position-generator.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ObstaclesService {
   constructor(
-    // private readonly snake: SnakeService,
     private readonly m: ModelService,
+    private readonly positionGeneratorService: PositionGeneratorService,
   ) {
     this.initObstacles();
   }
@@ -17,7 +17,7 @@ export class ObstaclesService {
   initObstacles(): void {
     // Згенеруємо 5 перешкод
     for (let i = 0; i < 5; i++) {
-      this.m.obstacles.push(this.getRandomObstaclePosition());
+      this.generateAndAddObstacle();
     }
   }
 
@@ -31,29 +31,15 @@ export class ObstaclesService {
     });
   }
 
-  addObstacle(position: Position): void {
-    this.m.obstacles.push(position);
-  }
-
-  getObstacles(): Position[] {
-    return this.m.obstacles;
+  generateAndAddObstacle(): void {
+    this.m.obstacles.push(
+      this.positionGeneratorService.getRandomGridPosition(),
+    );
   }
 
   checkObstacleCollision(position: Position): boolean {
     return this.m.obstacles.some(
       (obstacle) => obstacle.x === position.x && obstacle.y === position.y,
     );
-  }
-
-  getRandomObstaclePosition(): Position {
-    let newObstaclePosition: Position;
-    do {
-      newObstaclePosition = randomGridPosition();
-    } while (
-      this.checkObstacleCollision(newObstaclePosition) ||
-      // this.snake.onSnake(newObstaclePosition) ||
-      this.m.foodPosition === newObstaclePosition
-    );
-    return newObstaclePosition;
   }
 }

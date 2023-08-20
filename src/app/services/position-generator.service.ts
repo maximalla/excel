@@ -11,7 +11,7 @@ export class PositionGeneratorService {
   private readonly maxX: number;
   private readonly maxY: number;
 
-  constructor(private readonly modelService: ModelService) {
+  constructor(private readonly m: ModelService) {
     this.excludeRadius = 5;
     this.maxX = AppConstants.gridSizeX - 2;
     this.maxY = AppConstants.gridSizeY - 2;
@@ -35,9 +35,9 @@ export class PositionGeneratorService {
 
   private isInvalidPosition(position: Position): boolean {
     return (
-      this.isOccupiedPosition(position, this.modelService.snakeBody) ||
-      this.isOccupiedPosition(position, this.modelService.obstacles) ||
-      this.isOccupiedPosition(position, [this.modelService.foodPosition])
+      this.isOccupiedPosition(position, this.m.snakeBody) ||
+      this.isOccupiedPosition(position, this.m.obstacles) ||
+      this.isOccupiedPosition(position, [this.m.foodPosition])
     );
   }
 

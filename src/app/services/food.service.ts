@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { randomGridPosition } from '../game-engine/gameboard-grid.util';
 import { AppConstants } from '../shared/constants/constants';
 import { Position } from '../shared/interfaces/position';
 import { ModelService } from '../shared/types/model.service';
+import { PositionGeneratorService } from './position-generator.service';
 import { SnakeService } from './snake.service';
 
 @Injectable({
@@ -12,8 +12,9 @@ export class FoodService {
   constructor(
     private readonly m: ModelService,
     private readonly snake: SnakeService,
+    private readonly positionGeneratorService: PositionGeneratorService,
   ) {
-    this.m.foodPosition = this.getRandomFoodPosition();
+    this.m.foodPosition = this.positionGeneratorService.getRandomGridPosition();
   }
 
   set addScore(val: number) {
@@ -45,13 +46,6 @@ export class FoodService {
   }
 
   getRandomFoodPosition(): Position {
-    let newFoodPosition = randomGridPosition();
-    while (
-      this.snake.onSnake(newFoodPosition) ||
-      this.m.obstacles.includes(newFoodPosition)
-    ) {
-      newFoodPosition = randomGridPosition();
-    }
-    return newFoodPosition;
+    return this.positionGeneratorService.getRandomGridPosition();
   }
 }
