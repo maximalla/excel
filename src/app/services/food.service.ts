@@ -14,7 +14,7 @@ export class FoodService {
     private readonly snake: SnakeService,
     private readonly positionGeneratorService: PositionGeneratorService,
   ) {
-    this.m.foodPosition = this.positionGeneratorService.getRandomGridPosition();
+    this.m.foodPosition = this.getRandomFoodPosition();
   }
 
   set addScore(val: number) {

@@ -7,14 +7,14 @@ import { ModelService } from '../shared/types/model.service';
   providedIn: 'root',
 })
 export class PositionGeneratorService {
-  private readonly excludeRadius: number;
+  private readonly excludeRadius: number = 5;
   private readonly maxX: number;
   private readonly maxY: number;
+  private n: number = 0;
 
   constructor(private readonly m: ModelService) {
-    this.excludeRadius = 5;
-    this.maxX = AppConstants.gridSizeX - 2;
-    this.maxY = AppConstants.gridSizeY - 2;
+    this.maxX = AppConstants.gridSizeX;
+    this.maxY = AppConstants.gridSizeY;
   }
 
   getRandomGridPosition(): Position {
@@ -35,6 +35,11 @@ export class PositionGeneratorService {
 
   private isInvalidPosition(position: Position): boolean {
     return (
+      this.isOccupiedPosition(
+        position,
+        [this.m.snakeBody[0]],
+        this.excludeRadius,
+      ) ||
       this.isOccupiedPosition(position, this.m.snakeBody) ||
       this.isOccupiedPosition(position, this.m.obstacles) ||
       this.isOccupiedPosition(position, [this.m.foodPosition])
@@ -44,12 +49,12 @@ export class PositionGeneratorService {
   private isOccupiedPosition(
     position: Position,
     elements: Position[],
+    excludeRadius = 1,
   ): boolean {
     return elements.some(
       (element) =>
-        (Math.abs(element.x - position.x) <= this.excludeRadius &&
-          Math.abs(element.y - position.y) <= this.excludeRadius) ||
-        (element.x === position.x && element.y === position.y),
+        Math.abs(element.x - position.x) <= excludeRadius &&
+        Math.abs(element.y - position.y) <= excludeRadius,
     );
   }
 }

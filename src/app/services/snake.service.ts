@@ -56,6 +56,8 @@ export class SnakeService {
         this.m.levelUpdate();
       }
     }
+
+    this.obstacles.initObstacles();
   }
 
   draw(gameBoard: any): void {

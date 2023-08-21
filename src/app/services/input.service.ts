@@ -22,6 +22,7 @@ export class InputService {
   }
 
   setDirection(direction: string): void {
+    this.m.gameOver = false;
     switch (direction) {
       case 'ArrowUp':
         if (this.lastInputDirection.y !== 0) break;
@@ -44,7 +45,6 @@ export class InputService {
         this.m.headTurn = -90;
         break;
     }
-    this.m.isRunning = true;
   }
 
   getInputDirection(): Position {

@@ -4,6 +4,7 @@ import { FoodService } from '../services/food.service';
 import { InputService } from '../services/input.service';
 import { ObstaclesService } from '../services/obstacles.service';
 import { SnakeService } from '../services/snake.service';
+import { TimerService } from '../services/timer.service';
 import { AppConstants } from '../shared/constants/constants';
 import { ModelService } from '../shared/types/model.service';
 
@@ -19,6 +20,7 @@ export class GameBoardComponent implements OnInit, AfterViewInit, OnDestroy {
     private readonly snake: SnakeService,
     private readonly input: InputService,
     private readonly obstacles: ObstaclesService,
+    private readonly timer: TimerService,
   ) {}
 
   get snakeSpeed(): number {
@@ -32,7 +34,7 @@ export class GameBoardComponent implements OnInit, AfterViewInit, OnDestroy {
       Number(localStorage.getItem(AppConstants.localStorageRecordKey)) || 0;
     this.snake.listenToInputs();
     this.m.timerSubscription = interval(1000).subscribe(() => {
-      if (this.m.isRunning) this.m.time++;
+      if (this.m.gameOver !== undefined) this.timer.updateTime();
     });
   }
 
@@ -58,8 +60,8 @@ export class GameBoardComponent implements OnInit, AfterViewInit, OnDestroy {
 
   start(currentTime: any): void {
     if (this.m.isPaused) return;
+
     if (this.m.gameOver) {
-      this.m.isRunning = false;
       return console.log('Game Over');
     }
     window.requestAnimationFrame(this.start.bind(this));
@@ -71,10 +73,10 @@ export class GameBoardComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   togglePause(): void {
-    this.m.isPaused = !this.m.isPaused;
-    if (!this.m.isPaused) {
+    if (this.m.isPaused) {
+      this.timer.resumeTimer();
       this.start(performance.now());
-    }
+    } else this.timer.pauseTimer();
   }
 
   dpadMovement(direction: string): void {
@@ -100,7 +102,6 @@ export class GameBoardComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   restart(): void {
-    this.m.time = 0;
     window.location.reload();
   }
 }

@@ -10,14 +10,14 @@ export class ObstaclesService {
   constructor(
     private readonly m: ModelService,
     private readonly positionGeneratorService: PositionGeneratorService,
-  ) {
-    this.initObstacles();
-  }
+  ) {}
 
   initObstacles(): void {
-    // Згенеруємо 5 перешкод
-    for (let i = 0; i < 5; i++) {
+    while (this.m.obstacles.length < this.m.requiredObstacles) {
       this.generateAndAddObstacle();
+    }
+    while (this.m.obstacles.length > this.m.requiredObstacles) {
+      this.m.obstacles.pop();
     }
   }
 

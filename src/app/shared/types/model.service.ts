@@ -15,7 +15,7 @@ export class ModelService {
   headTurn = 0;
   timerSubscription!: Subscription;
   time: number = 0;
-  isRunning = false;
+  requiredObstacles: number = 0;
 
   foodPosition: Position = { x: -5, y: -5 };
   snakeBody: Position[] = [{ x: 20, y: 11 }];
@@ -23,7 +23,7 @@ export class ModelService {
 
   private _level = 1;
   private _isPaused = false;
-  private _gameOver = false;
+  private _gameOver!: boolean;
 
   get level(): number {
     return this._level;
@@ -32,6 +32,10 @@ export class ModelService {
   set level(value: number) {
     if (value < 5) this.gameBoard.style.border = '5px solid red';
     else this.gameBoard.style.border = '5px solid blue';
+
+    if (value >= 10) this.requiredObstacles = value;
+    else this.requiredObstacles = 0;
+
     this._level = value;
   }
 
@@ -41,7 +45,6 @@ export class ModelService {
 
   set isPaused(value: boolean) {
     this._isPaused = value;
-    this.isRunning = !value;
   }
 
   get gameOver(): boolean {
@@ -50,10 +53,10 @@ export class ModelService {
 
   set gameOver(value: boolean) {
     this._gameOver = value;
-    if (value) this.isRunning = false;
+    if (value) this.isPaused = true;
   }
 
   levelUpdate() {
-    this.level = Math.ceil((this.score + 1) / 1);
+    this.level = Math.ceil((this.score + 1) / 10);
   }
 }
