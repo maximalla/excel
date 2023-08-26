@@ -1,5 +1,7 @@
 <div class="container">
   <div class="score-card">
+    <div (click)="instructionWindow.style.display = 'block'" class="instruction-button">?</div>
+
     <h3>Best score: {{m.bestScore}}</h3>
 
     <h3>Score: {{m.score}}</h3>
@@ -14,6 +16,10 @@
   </div>
   <div class="game-board"></div>
 
+  <div #instructionWindow class="instruction-window">
+    <!-- Вміст вікна з інструкціями -->
+  </div>
+
   <div *ngIf="m.isPaused && !m.gameOver" class="pause-overlay">
     <h1>PAUSED</h1>
     <p>Press Space to resume</p>
@@ -25,10 +31,10 @@
 
   <div class="mobile-controls">
     <nav class="o-pad">
-      <a (click)="dpadMovement('ArrowUp')" class="up"></a>
-      <a (click)="dpadMovement('ArrowRight')" class="right"></a>
-      <a (click)="dpadMovement('ArrowDown')" class="down"></a>
-      <a (click)="dpadMovement('ArrowLeft')" class="left"></a>
+      <a (click)="dPadMovement('ArrowUp')" class="up"></a>
+      <a (click)="dPadMovement('ArrowRight')" class="right"></a>
+      <a (click)="dPadMovement('ArrowDown')" class="down"></a>
+      <a (click)="dPadMovement('ArrowLeft')" class="left"></a>
     </nav>
   </div>
 

@@ -6,23 +6,25 @@ import { Position } from '../interfaces/position';
   providedIn: 'root',
 })
 export class ModelService {
-  lastRenderTime = 0;
-  gameBoard: any;
-  baseSpeed = 3;
-  expansionRate = 1;
-  score = 0;
-  bestScore = 0;
-  headTurn = 0;
   timerSubscription!: Subscription;
-  time: number = 0;
+  lastRenderTime: number = 0;
   requiredObstacles: number = 0;
+  gameBoard: any;
+
+  readonly baseSpeed: number = 3;
+
+  score: number = 0;
+  bestScore: number = 0;
+  time: number = 0;
+
+  headTurn: number = 0;
 
   foodPosition: Position = { x: -5, y: -5 };
   snakeBody: Position[] = [{ x: 20, y: 11 }];
   obstacles: Position[] = [];
 
-  private _level = 1;
-  private _isPaused = false;
+  private _level: number = 1;
+  private _isPaused: boolean = false;
   private _gameOver!: boolean;
 
   get level(): number {
@@ -56,7 +58,7 @@ export class ModelService {
     if (value) this.isPaused = true;
   }
 
-  levelUpdate() {
-    this.level = Math.ceil((this.score + 1) / 10);
+  levelUpdate(): void {
+    this.level = Math.ceil(this.score + 1 /*/ 10*/);
   }
 }

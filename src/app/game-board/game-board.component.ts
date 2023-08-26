@@ -14,6 +14,9 @@ import { ModelService } from '../shared/types/model.service';
   styleUrls: ['./game-board.component.scss'],
 })
 export class GameBoardComponent implements OnInit, AfterViewInit, OnDestroy {
+  time: number = Math.floor(this.m.time / 1000);
+  private deathSound: HTMLAudioElement;
+
   constructor(
     readonly m: ModelService,
     private readonly food: FoodService,
@@ -21,7 +24,9 @@ export class GameBoardComponent implements OnInit, AfterViewInit, OnDestroy {
     private readonly input: InputService,
     private readonly obstacles: ObstaclesService,
     private readonly timer: TimerService,
-  ) {}
+  ) {
+    this.deathSound = new Audio('assets/sounds/misc_soundboard_sad_bone.mp3');
+  }
 
   get snakeSpeed(): number {
     return this.m.level < 10
@@ -39,18 +44,18 @@ export class GameBoardComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    this.m.gameBoard = document.querySelector('.game-board');
+    this.m.gameBoard = document.querySelector(AppConstants.containerSelector);
+    if (!this.m.gameBoard)
+      throw new Error(
+        `Can't find container with selector "${AppConstants.containerSelector}"`,
+      );
     window.requestAnimationFrame(this.start.bind(this));
 
     document.addEventListener('keydown', (event) => {
-      if (event.code === 'Space') {
-        this.togglePause();
-      }
+      if (event.code === 'Space') this.togglePause();
     });
     document.addEventListener('keydown', (event) => {
-      if (event.code === 'KeyR') {
-        this.restart();
-      }
+      if (event.code === 'KeyR') this.restart();
     });
   }
 
@@ -79,13 +84,14 @@ export class GameBoardComponent implements OnInit, AfterViewInit, OnDestroy {
     } else this.timer.pauseTimer();
   }
 
-  dpadMovement(direction: string): void {
+  dPadMovement(direction: string): void {
     this.input.setDirection(direction);
   }
 
   update(): void {
     this.snake.update();
     this.food.update();
+    this.obstacles.update();
     this.checkDeath();
   }
 
@@ -98,6 +104,7 @@ export class GameBoardComponent implements OnInit, AfterViewInit, OnDestroy {
 
   checkDeath(): void {
     if (!this.m.gameOver) return;
+    this.deathSound.play();
     this.m.gameBoard.classList.add('blur');
   }
 

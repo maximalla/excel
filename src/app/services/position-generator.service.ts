@@ -10,7 +10,6 @@ export class PositionGeneratorService {
   private readonly excludeRadius: number = 5;
   private readonly maxX: number;
   private readonly maxY: number;
-  private n: number = 0;
 
   constructor(private readonly m: ModelService) {
     this.maxX = AppConstants.gridSizeX;

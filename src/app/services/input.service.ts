@@ -7,8 +7,8 @@ import { ModelService } from '../shared/types/model.service';
   providedIn: 'root',
 })
 export class InputService {
-  inputDirection = { x: 0, y: 0 };
-  lastInputDirection = { x: 0, y: 0 };
+  inputDirection: Position = { x: 0, y: 0 };
+  lastInputDirection: Position = { x: 0, y: 0 };
 
   constructor(private readonly m: ModelService) {}
 

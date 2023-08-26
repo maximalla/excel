@@ -35,7 +35,9 @@ body {
 }
 
 .obstacle {
-  background: saddlebrown;
+  background-image: url('assets/images/poop.png');
+  background-repeat: no-repeat;
+  background-size: contain;
 }
 
 .snake {
@@ -49,6 +51,11 @@ body {
 
 .head {
   background-color: var(--head-color);
+  border-radius: 0 0 50% 50%;
+}
+
+.tail {
+  border-radius: 50% 50% 0 0;
 }
 
 

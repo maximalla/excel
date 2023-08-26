@@ -1,4 +1,5 @@
 export class AppConstants {
+  static containerSelector = '.game-board';
   static localStorageRecordKey = 'record';
 
   static readonly gridSizeX = 40;

@@ -9,25 +9,22 @@ export class TimerService {
 
   constructor(private readonly m: ModelService) {}
 
-  pauseTimer() {
-    if (!this.m.isPaused) {
-      this.m.isPaused = true;
-    }
+  pauseTimer(): void {
+    if (!this.m.isPaused) this.m.isPaused = true;
   }
 
-  resumeTimer() {
-    if (this.m.isPaused) {
-      this.startTime = performance.now() - this.m.time * 1000; // Відновити час, що пройшов під час паузи
+  resumeTimer(): void {
+    if (this.m.isPaused && !this.m.gameOver) {
+      this.startTime = performance.now() - this.m.time * 1000;
       this.m.isPaused = false;
     }
   }
 
-  updateTime() {
+  updateTime(): void {
     if (!this.m.isPaused) {
       if (this.startTime === -10) this.startTime = performance.now() - 1;
       const currentTime = performance.now();
-      const deltaTime = (currentTime - this.startTime) / 1000; // перетворити в секунди
-      this.m.time = Math.floor(deltaTime);
+      this.m.time = Math.floor((currentTime - this.startTime) / 1000);
     }
   }
 }

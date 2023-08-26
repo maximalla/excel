@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { outsideGrid } from '../game-engine/gameboard-grid.util';
 import { AppConstants } from '../shared/constants/constants';
 import { Position } from '../shared/interfaces/position';
 import { ModelService } from '../shared/types/model.service';
@@ -10,13 +9,16 @@ import { ObstaclesService } from './obstacles.service';
   providedIn: 'root',
 })
 export class SnakeService {
-  newSegments = 0;
+  private newSegments: number = 0;
+  private eatSnakeSound: HTMLAudioElement;
 
   constructor(
     private readonly m: ModelService,
     private readonly input: InputService,
     private readonly obstacles: ObstaclesService,
-  ) {}
+  ) {
+    this.eatSnakeSound = new Audio('assets/sounds/tmpnvvsvfad.mp3');
+  }
 
   listenToInputs(): void {
     this.input.getInputs();
@@ -24,40 +26,39 @@ export class SnakeService {
 
   update(): void {
     this.addSegments();
-    const inputDirection = this.input.getInputDirection();
+    const inputDirection: Position = this.input.getInputDirection();
     for (let i = this.m.snakeBody.length - 2; i >= 0; i--) {
       this.m.snakeBody[i + 1] = { ...this.m.snakeBody[i] };
     }
 
-    const newHeadX =
+    const newHeadX: number =
       ((this.m.snakeBody[0].x + inputDirection.x + AppConstants.gridSizeX - 1) %
         AppConstants.gridSizeX) +
       1;
-    const newHeadY =
+    const newHeadY: number =
       ((this.m.snakeBody[0].y + inputDirection.y + AppConstants.gridSizeY - 1) %
         AppConstants.gridSizeY) +
       1;
 
     if (
       (this.m.level < 5 &&
-        outsideGrid(this.m.snakeBody[0], { x: newHeadX, y: newHeadY })) ||
+        this.outsideGrid(this.m.snakeBody[0], { x: newHeadX, y: newHeadY })) ||
       this.obstacles.checkObstacleCollision(this.m.snakeBody[0])
     )
       this.m.gameOver = true;
 
     this.m.snakeBody[0] = { x: newHeadX, y: newHeadY };
 
-    const intersectionIndex = this.snakeIntersection();
+    const intersectionIndex: number = this.snakeIntersection();
     if (intersectionIndex) {
       if (this.m.level < 10) this.m.gameOver = true;
       else {
+        this.eatSnakeSound.play();
         this.m.snakeBody.splice(intersectionIndex);
         this.m.score = this.m.snakeBody.length - 1;
         this.m.levelUpdate();
       }
     }
-
-    this.obstacles.initObstacles();
   }
 
   draw(gameBoard: any): void {
@@ -66,10 +67,7 @@ export class SnakeService {
       snakeElement.style.gridRowStart = segment.y.toString();
       snakeElement.style.gridColumnStart = segment.x.toString();
       snakeElement.classList.add('snake');
-
-      snakeElement.innerText += i.toString();
-      if (i === 0) {
-        snakeElement.innerText += '.' + i.toString();
+      if (!i) {
         snakeElement.classList.add('head');
         snakeElement.style.transform = 'rotate(' + this.m.headTurn + 'deg)';
       }
@@ -78,7 +76,7 @@ export class SnakeService {
   }
 
   expandSnake(): void {
-    this.newSegments += this.m.expansionRate;
+    this.newSegments += 1;
   }
 
   snakeIntersection(): number {
@@ -89,10 +87,9 @@ export class SnakeService {
     return 0;
   }
 
-  onSnake(position: Position, { ignoreHead = false } = {}) {
-    return this.m.snakeBody.some((segment, index) => {
-      if (ignoreHead && index === 0) return false;
-      return this.equalPositions(segment, position);
+  onSnake(): boolean {
+    return this.m.snakeBody.some((segment: Position) => {
+      return this.equalPositions(segment, this.m.foodPosition);
     });
   }
 
@@ -107,5 +104,14 @@ export class SnakeService {
       });
     }
     this.newSegments = 0;
+  }
+
+  outsideGrid(position1: Position, position2: Position): boolean {
+    return (
+      (position1.x === 1 && position2.x === AppConstants.gridSizeX) ||
+      (position1.x === AppConstants.gridSizeX && position2.x === 1) ||
+      (position1.y === 1 && position2.y === AppConstants.gridSizeY) ||
+      (position1.y === AppConstants.gridSizeY && position2.y === 1)
+    );
   }
 }

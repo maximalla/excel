@@ -12,7 +12,7 @@ export class ObstaclesService {
     private readonly positionGeneratorService: PositionGeneratorService,
   ) {}
 
-  initObstacles(): void {
+  update(): void {
     while (this.m.obstacles.length < this.m.requiredObstacles) {
       this.generateAndAddObstacle();
     }
