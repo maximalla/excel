@@ -9,15 +9,12 @@ import { SnakeService } from './snake.service';
   providedIn: 'root',
 })
 export class FoodService {
-  private eatFoodSound: HTMLAudioElement;
-
   constructor(
     private readonly m: ModelService,
     private readonly snake: SnakeService,
     private readonly positionGeneratorService: PositionGeneratorService,
   ) {
     this.m.foodPosition = this.getRandomFoodPosition();
-    this.eatFoodSound = new Audio('assets/sounds/Buy.mp3');
   }
 
   set addScore(val: number) {
@@ -37,7 +34,7 @@ export class FoodService {
       this.snake.expandSnake();
       this.m.foodPosition = this.getRandomFoodPosition();
       this.addScore = 1;
-      this.eatFoodSound.play().then();
+      this.m.eatFoodSound.play();
     }
   }
 

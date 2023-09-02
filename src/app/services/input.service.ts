@@ -22,24 +22,27 @@ export class InputService {
   }
 
   setDirection(direction: string): void {
+    const { ArrowUp, ArrowDown, ArrowLeft, ArrowRight } =
+      AppConstants.keyToDirection;
+
     this.m.gameOver = false;
     switch (direction) {
-      case 'ArrowUp':
+      case ArrowUp:
         if (this.lastInputDirection.y !== 0) break;
         this.inputDirection = { x: 0, y: -1 };
         this.m.headTurn = 180;
         break;
-      case 'ArrowDown':
+      case ArrowDown:
         if (this.lastInputDirection.y !== 0) break;
         this.inputDirection = { x: 0, y: 1 };
         this.m.headTurn = 0;
         break;
-      case 'ArrowLeft':
+      case ArrowLeft:
         if (this.lastInputDirection.x !== 0) break;
         this.inputDirection = { x: -1, y: 0 };
         this.m.headTurn = 90;
         break;
-      case 'ArrowRight':
+      case ArrowRight:
         if (this.lastInputDirection.x !== 0) break;
         this.inputDirection = { x: 1, y: 0 };
         this.m.headTurn = -90;

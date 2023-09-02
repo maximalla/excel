@@ -17,6 +17,10 @@ export class ModelService {
   bestScore: number = 0;
   time: number = 0;
 
+  eatFoodSound: HTMLAudioElement = new Audio('assets/sounds/Buy.mp3');
+  deathSound = new Audio('assets/sounds/misc_soundboard_sad_bone.mp3');
+  eatSnakeSound = new Audio('assets/sounds/tmpnvvsvfad.mp3');
+
   headTurn: number = 0;
 
   foodPosition: Position = { x: -5, y: -5 };
@@ -59,6 +63,6 @@ export class ModelService {
   }
 
   levelUpdate(): void {
-    this.level = Math.ceil(this.score + 1 /*/ 10*/);
+    this.level = Math.ceil(this.score + 1 / 10);
   }
 }

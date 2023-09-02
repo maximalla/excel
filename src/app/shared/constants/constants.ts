@@ -5,7 +5,7 @@ export class AppConstants {
   static readonly gridSizeX = 40;
   static readonly gridSizeY = 20;
 
-  static keyToDirection: { [key: string]: string } = {
+  static readonly keyToDirection: { [key: string]: string } = {
     ArrowUp: 'ArrowUp',
     KeyW: 'ArrowUp',
     Numpad8: 'ArrowUp',

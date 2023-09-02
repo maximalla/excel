@@ -38,6 +38,7 @@ body {
   background-image: url('assets/images/poop.png');
   background-repeat: no-repeat;
   background-size: contain;
+  transition: all .3ms ease-in;
 }
 
 .snake {
@@ -58,11 +59,10 @@ body {
   border-radius: 50% 50% 0 0;
 }
 
-
 .food {
-  border-radius: 50%;
-  background-color: var(--food-color);
-  border: 0.25vmin solid black;
+  background-image: url('assets/images/bounty-rune.png');
+  background-repeat: no-repeat;
+  background-size: contain;
   transition: all .3ms ease-in;
 }
 
