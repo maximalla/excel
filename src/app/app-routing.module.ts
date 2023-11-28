@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { GameBoardComponent } from './game-board/game-board.component';
+import { MainComponent } from './main/main.component';
 
 const routes: Routes = [
-  { path: '', component: GameBoardComponent },
+  { path: '', component: MainComponent },
   { path: '**', redirectTo: '' },
 ];
 
